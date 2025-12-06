@@ -134,7 +134,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useOnlineCount } from '../composables/useOnlineCount.js'
 
-const WS_URL = 'wss://study-with-miku-onlinecounter.1839192968.workers.dev/ws'
+const WS_URL = 'wss://online.study.mikugame.icu/ws'
 const { onlineCount, isConnected } = useOnlineCount(WS_URL)
 
 const STATUS = {
