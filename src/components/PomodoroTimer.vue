@@ -259,19 +259,8 @@ const handleTimerComplete = () => {
 }
 
 const playNotificationSound = () => {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-  const oscillator = audioContext.createOscillator()
-  const gainNode = audioContext.createGain()
-  
-  oscillator.connect(gainNode)
-  gainNode.connect(audioContext.destination)
-  
-  oscillator.frequency.value = 800
-  gainNode.gain.value = 0.1
-  
-  oscillator.start()
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5)
-  oscillator.stop(audioContext.currentTime + 0.5)
+  const audio = new Audio('/BreakOrWork.mp3')
+  audio.play()
 }
 
 const showNotification = () => {
