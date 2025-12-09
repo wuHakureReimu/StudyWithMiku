@@ -30,6 +30,8 @@
     
     <!-- APlayer 播放器 -->
     <div id="aplayer" class="aplayer-container"></div>
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3OFbo4ER8B3QNm7x",ck:"3OFbo4ER8B3QNm7x",autoTrack:true,hashMode:true})</script>
   </div>
 </template>
 
