@@ -93,9 +93,11 @@ export const useMusic = () => {
   }
 
   const resetToLocal = async () => {
-    currentSource.value = MUSIC_SOURCE.LOCAL
-    localStorage.setItem('music_source', MUSIC_SOURCE.LOCAL)
-    loadLocalSongs()
+    currentSource.value = MUSIC_SOURCE.METING
+    localStorage.setItem('music_source', MUSIC_SOURCE.METING)
+    setPlatform('netease')
+    resetPlaylistId()
+    await loadMetingSongs('netease', DEFAULT_PLAYLIST_ID)
   }
 
   return {
