@@ -21,6 +21,9 @@
       <div class="status-badge" :class="statusClass">
         {{ statusText }}
       </div>
+      <div class="system-time">
+        {{ systemTime }}
+      </div>
     </div>
     <transition name="fade">
       <div v-if="showSettings" class="settings-overlay" @click.self="closeSettings" @mouseenter="onUIMouseEnter" @mouseleave="onUIMouseLeave" @touchstart="onUITouchStart" @touchend="onUITouchEnd">
@@ -146,6 +149,7 @@
               <div class="playlist-actions">
                 <button class="action-btn apply-btn" @click="applyPlaylist">获取</button>
                 <button class="action-btn reset-playlist-btn" @click="resetPlaylist">恢复默认</button>
+                <button class="action-btn jazz-btn" @click="applyJazzPlaylist">站长神秘歌单</button>
               </div>
               <a class="help-link" href="https://www.bilibili.com/opus/1144256090307821590" target="_blank">歌单ID怎么获取?</a>
             </div>
@@ -190,6 +194,15 @@ const resetPlaylist = async () => {
   }
 }
 
+const applyJazzPlaylist = async () => {
+  await applyCustomPlaylist('netease', '8894040639')
+  const ap = getAPlayerInstance()
+  if (ap) {
+    ap.list.clear()
+    ap.list.add(songs.value)
+  }
+}
+
 const STATUS = {
   FOCUS: 'focus',
   BREAK: 'break',
@@ -204,6 +217,14 @@ const isRunning = ref(false)
 const currentStatus = ref(STATUS.FOCUS)
 const completedPomodoros = ref(0)
 const showSettings = ref(false)
+
+const currentTime = ref(new Date())
+const systemTime = computed(() => {
+  const h = currentTime.value.getHours().toString().padStart(2, '0')
+  const m = currentTime.value.getMinutes().toString().padStart(2, '0')
+  return `${h}:${m}`
+})
+let timeInterval = null
 
 watch(focusDuration, (newVal) => {
   if (currentStatus.value === STATUS.FOCUS && !isRunning.value) {
@@ -352,11 +373,17 @@ onMounted(() => {
   if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission()
   }
+  timeInterval = setInterval(() => {
+    currentTime.value = new Date()
+  }, 1000)
 })
 
 onUnmounted(() => {
   if (timer) {
     clearInterval(timer)
+  }
+  if (timeInterval) {
+    clearInterval(timeInterval)
   }
 })
 </script>
@@ -380,6 +407,14 @@ onUnmounted(() => {
   gap: 1rem;
   color: white;
   font-family: 'Courier New', monospace;
+}
+
+.system-time {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.8;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .online-indicator {
